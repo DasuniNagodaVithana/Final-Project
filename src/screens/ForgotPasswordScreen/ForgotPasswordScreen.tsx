@@ -1,0 +1,78 @@
+import React ,{useState}from 'react';
+import { View, Text, StyleSheet,useWindowDimensions } from 'react-native';
+import Custominput from '../../components/Custominput';
+import CustomButton from '../../components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
+
+
+const ForgotPasswordScreen: React.FC = () => {
+  const [username,setUsername]=useState('');
+  const navigation =useNavigation();
+  
+
+  //CustomButton function 
+  const onSendPressed=()=>{
+    navigation.navigate('NewPassword')
+  }
+  
+  const onSignInPressed=() =>{
+    navigation.navigate('SignIn');
+  }
+  const onResendPressed=() =>{
+    console.warn('Resend')
+  }
+  
+
+  return (
+    <View style={styles.root}>
+      <Text style={styles.title}>Reset your password</Text>
+
+      <Custominput 
+      placeholder='Username'
+      value={username}
+      setvalue={setUsername}
+      secureTextEntry={false}
+      />
+      
+
+      
+     <CustomButton 
+     text='Send'
+     onPress={onSendPressed}
+     />
+     
+
+    <CustomButton 
+     text="Back to Sign in"
+     onPress={onSignInPressed}
+     type='TERTIARY'
+     />
+    </View>
+  );
+};
+
+const styles=StyleSheet.create({
+  
+  root:{
+    alignItems:'center',
+    padding:20,
+    
+    flex:1,
+  },
+  title:{
+    fontSize:24,
+    fontWeight:'bold',
+    color:'#051C68',
+    margin:10,
+  },
+  text:{
+    color:'grey',
+    marginVertical:10,
+
+  },
+  link:{
+    color:'#FDB075'
+  }
+})
+
+export default ForgotPasswordScreen;
