@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 
 
@@ -9,8 +9,9 @@ const OnBoardScreen: React.FunctionComponent = () => {
     <ImageBackground
     source={require('../assessts/images/coast-3384845.jpg')}
     style={styles.profileImage}
-
     >
+        <LinearGradient colors={['transparent', '#151414']} style={styles.background}>
+          </LinearGradient>
     <View style={styles.container}>  
             <Text style={styles.welcomeText}>Explore Sri Lanka with Us</Text>  
             <View style={styles.button}>
@@ -59,6 +60,17 @@ const styles = StyleSheet.create({
             textAlign: 'center',
             padding: 30,
         },
+        background: {
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            left: 0,
+            paddingLeft: 15,
+            paddingRight: 15,
+            borderRadius: 5,
+        },
+    
+
 });
 
 export default OnBoardScreen ;
