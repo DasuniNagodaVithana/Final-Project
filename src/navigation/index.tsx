@@ -13,12 +13,14 @@ import Search from "../screens/HomeScreen/Search";
 import Index from '../screens/HomeScreen';
 import MapScreen from '../screens/HomeScreen/MapScreen';
 import TabNavigator from './TabNavigation';
+import OnBoardScreen from '../screens/OnBoardScreen/OnBoardScreen';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Screen name='Onboard' component={OnBoardScreen} />
         <Stack.Screen name='SignIn' component={SigninScreen} />
         <Stack.Screen name='SignUp' component={SignUpScreen} />
         <Stack.Screen name='ConfirmEmail' component={ConfirmEmailScreen} />
