@@ -31,14 +31,13 @@ const SigninScreen: React.FC = () => {
       // Handle the error, display a message, or perform other actions
     }
   };
-  const onForgotPasswordPressed=() =>{
-    
-    navigation.navigate('ForgotPassword')
-  }
-  
-  const onSignUpPressed=() =>{
-    navigation.navigate('SignUp')
-  }
+  const onForgotPasswordPressed = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
+  const onSignUpPressed = () => {
+    navigation.navigate('SignUp' );
+  };
 
 
   return (
