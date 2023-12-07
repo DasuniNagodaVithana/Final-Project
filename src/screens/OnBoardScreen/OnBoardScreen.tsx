@@ -9,7 +9,7 @@ const OnBoardScreen: React.FunctionComponent = () => {
     <ImageBackground
     source={require('../assessts/images/coast-3384845.jpg')}
     style={styles.profileImage}>
-        
+
         <LinearGradient colors={['transparent', '#151414']} style={styles.background}>
           </LinearGradient>
     <View style={styles.container}>  
