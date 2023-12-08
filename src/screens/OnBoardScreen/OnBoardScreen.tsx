@@ -10,7 +10,6 @@ const OnBoardScreen: React.FC = () => {
     navigation.navigate('SignIn');
   };
 
-
   return (
     <ImageBackground
     source={require('../../assets/images/coast-3384845.jpg')}
