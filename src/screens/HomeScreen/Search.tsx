@@ -1,18 +1,31 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TextInput, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
 
 interface Hotel {
+  id: string;
   name: string;
   address: string;
-  contactNumber: string;
+  image: string;
+  rating: number;
+  type: string;
   // Add more properties based on your hotel API response
 }
 
-const Favourite: React.FC = () => {
-  const [input, setInput] = useState('Paris'); // Set default city to Paris
-  const [loading, setLoading] = useState(false);
-  const [hotelData, setHotelData] = useState<Hotel[] | null>(null);
+const Search: React.FC = () => {
+  const [location, setLocation] = useState('');
+  const [checkinDate, setCheckinDate] = useState('');
+  const [checkoutDate, setCheckoutDate] = useState('');
+  const [hotels, setHotels] = useState<Hotel[]>([]);
 
   const airbnbApi = {
     baseUrl: 'https://airbnb13.p.rapidapi.com/search-location',
@@ -20,14 +33,13 @@ const Favourite: React.FC = () => {
     host: 'airbnb13.p.rapidapi.com',
   };
 
-  const fetchHotelData = useCallback(async () => {
-    setLoading(true);
+  const searchHotels = async () => {
     try {
       const response = await axios.get(airbnbApi.baseUrl, {
         params: {
-          location: input,
-          checkin: '2023-09-16',
-          checkout: '2023-09-17',
+          location,
+          checkin: checkinDate,
+          checkout: checkoutDate,
           adults: '1',
           children: '0',
           infants: '0',
@@ -40,97 +52,107 @@ const Favourite: React.FC = () => {
           'X-RapidAPI-Host': airbnbApi.host,
         },
       });
+      const hotelsData = response.data.results; // Assuming the hotel data is in the 'results' property
 
+      const formattedHotels = hotelsData.map((hotel: any) => ({
+        id: hotel.id,
+        name: hotel.name,
+        address: hotel.address,
+        image: hotel.images[0], // Modify this based on how images are provided in your response
+        // Map other properties according to the Hotel interface
+        rating: hotel.rating,
+        type: hotel.type,
+        // ... other properties
+      }));
       console.log(response.data);
+
       // Assuming the structure of the API response contains an array of hotels
-      setHotelData(response.data.hotels);
+      setHotels(formattedHotels);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
-  }, [airbnbApi.baseUrl, airbnbApi.key, airbnbApi.host, input]);
+  };
 
-  useEffect(() => {
-    fetchHotelData(); // Fetch hotel data when the component mounts
-  }, [fetchHotelData]);
+  const renderItem = ({ item }: { item: Hotel }) => (
+    <TouchableOpacity style={styles.hotelItem}>
+      <Image source={{ uri: item.image }} style={styles.hotelImage} />
+      <View style={styles.hotelDetails}>
+        <Text style={styles.hotelName}>{item.name}</Text>
+        <Text style={styles.hotelAddress}>{item.address}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
-    <View style={styles.root}>
-      <ImageBackground
-        source={require('../../assets/images/hotel.jpg')}
-        resizeMode="cover"
-        style={styles.image}
-      >
-        <View>
-          <TextInput
-            placeholder="Enter City Name"
-            onChangeText={(text) => setInput(text)}
-            value={input}
-            placeholderTextColor={'grey'}
-            style={styles.textInput}
-            onSubmitEditing={fetchHotelData}
-          />
-        </View>
-        {loading && (
-          <View>
-            <ActivityIndicator size={'large'} color={'#000'} />
-          </View>
-        )}
-        {hotelData && (
-          <View style={styles.infoView}>
-            {hotelData.map((hotel, index) => (
-              <View key={index}>
-                <Text style={styles.hotelName}>{hotel.name}</Text>
-                <Text style={styles.hotelAddress}>{hotel.address}</Text>
-                <Text style={styles.hotelContact}>{hotel.contactNumber}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-      </ImageBackground>
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          placeholder="Enter Location"
+          style={styles.input}
+          value={location}
+          onChangeText={(text) => setLocation(text)}
+        />
+        <TextInput
+          placeholder="Check-in Date"
+          style={styles.input}
+          value={checkinDate}
+          onChangeText={(text) => setCheckinDate(text)}
+        />
+        <TextInput
+          placeholder="Check-out Date"
+          style={styles.input}
+          value={checkoutDate}
+          onChangeText={(text) => setCheckoutDate(text)}
+        />
+        <Button title="Search" onPress={searchHotels} />
+      </View>
+      <FlatList
+        data={hotels}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        style={styles.hotelList}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  searchContainer: {
+    marginBottom: 16,
+  },
+  input: {
+    borderBottomWidth: 1,
+    marginBottom: 8,
+    fontSize: 16,
+  },
+  hotelList: {
     flex: 1,
   },
-  image: {
+  hotelItem: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  hotelImage: {
+    width: 100,
+    height: 100,
+    marginRight: 16,
+    borderRadius: 8,
+  },
+  hotelDetails: {
     flex: 1,
-    flexDirection: 'column',
-  },
-  textInput: {
-    borderBottomWidth: 3,
-    padding: 6,
-    paddingVertical: 13,
-    marginVertical: 70,
-    marginHorizontal: 20,
-    backgroundColor: '#fff',
-    fontSize: 19,
-    borderRadius: 10,
-    borderBottomColor: 'purple',
-    color: 'black',
-  },
-  infoView: {
-    alignItems: 'center',
   },
   hotelName: {
-    color: '#fff',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 4,
   },
   hotelAddress: {
-    color: '#fff',
     fontSize: 16,
-    marginVertical: 4,
-  },
-  hotelContact: {
-    color: '#fff',
-    fontSize: 16,
-    marginVertical: 4,
   },
 });
 
-export default Favourite;
+export default Search;
