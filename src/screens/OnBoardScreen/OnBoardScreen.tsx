@@ -13,7 +13,7 @@ const OnBoardScreen: React.FC = () => {
 
   return (
     <ImageBackground
-    source={require('../assessts/images/coast-3384845.jpg')}
+    source={require('../../assets/images/coast-3384845.jpg')}
     style={styles.profileImage}>
         
         <LinearGradient colors={['transparent', '#151414']} style={styles.background}>
