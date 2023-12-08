@@ -58,15 +58,13 @@ const Search: React.FC = () => {
         id: hotel.id,
         name: hotel.name,
         address: hotel.address,
-        image: hotel.images[0], // Modify this based on how images are provided in your response
-        // Map other properties according to the Hotel interface
+        image: hotel.images[0],
         rating: hotel.rating,
         type: hotel.type,
-        // ... other properties
+
       }));
       console.log(response.data);
 
-      // Assuming the structure of the API response contains an array of hotels
       setHotels(formattedHotels);
     } catch (error) {
       console.error(error);
