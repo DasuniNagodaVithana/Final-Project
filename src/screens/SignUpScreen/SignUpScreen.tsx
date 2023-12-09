@@ -4,19 +4,37 @@ import Custominput from '../../components/Custominput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
+import auth,{ FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 const SignUpScreen: React.FC = () => {
-  const [username,setUsername]=useState('');
-  const [email,setEmail]=useState('');
-  const [password,setPassword]=useState('');
-  const [passwordRepeat,setPasswordRepeat]=useState('');
-  const navigation =useNavigation();
+  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordRepeat, setPasswordRepeat] = useState<string>('');
+  const navigation = useNavigation();
 
 
   //CustomButton function 
-  const onRegisterPressed=()=>{
-    navigation.navigate('ConfirmEmail');
-  }
+  const onRegisterPressed = async () => {
+    try {
+      if (password !== passwordRepeat) {
+        console.warn('Passwords do not match');
+        return;
+      }
+  
+      const { user }: FirebaseAuthTypes.UserCredential = await auth().createUserWithEmailAndPassword(email, password);
+  
+      // Additional user data can be updated here if needed
+      await user?.updateProfile({
+        displayName: username,
+      });
+  
+      navigation.navigate('ConfirmEmail');
+    } catch (error:any) {
+      console.error('Error registering user:', error.message);
+    }
+  };
+
   
   const onSignInPressed=() =>{
     navigation.navigate('SignIn');

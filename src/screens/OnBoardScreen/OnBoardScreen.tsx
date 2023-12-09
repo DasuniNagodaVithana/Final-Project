@@ -1,13 +1,18 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
+const OnBoardScreen: React.FC = () => {
+  const navigation = useNavigation();
 
+  const handleNavigateToSignIn = () => {
+    navigation.navigate('SignIn');
+  };
 
-const OnBoardScreen: React.FunctionComponent = () => {
   return (
     <ImageBackground
-    source={require('../assessts/images/coast-3384845.jpg')}
+    source={require('../../assets/images/coast-3384845.jpg')}
     style={styles.profileImage}>
 
         <LinearGradient colors={['transparent', '#151414']} style={styles.background}>
@@ -15,8 +20,8 @@ const OnBoardScreen: React.FunctionComponent = () => {
     <View style={styles.container}>  
             <Text style={styles.welcomeText}>Explore Sri Lanka with Us</Text>  
             <View style={styles.button}>
-                <TouchableOpacity>
-                    <Text style={styles.buttonText}>Let's Go</Text>
+            <TouchableOpacity onPress={handleNavigateToSignIn}>
+          <Text style={styles.buttonText}>Let's Go</Text>
                 </TouchableOpacity>
             </View>
         </View>
