@@ -10,34 +10,30 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import HotelDetails from '../HotelDetails';
+import { Linking } from 'react-native';
 
-import { StackNavigationProp } from '@react-navigation/stack';
-
-interface Props {
-  navigation: StackNavigationProp<any, any>;
+interface Hotel {
+  id: string;
+  name: string;
+  address: string;
+  image: string;
+  rating: number;
+  type: string;
+  url: string;
+  
+  
 }
+const openHotelUrl = (url: string) => {
+  Linking.openURL(url).catch((err) => console.error('Error opening URL:', err));
+};
 
 
-const Search: React.FC<Props> = ({ navigation }) => {
+const Search: React.FC = () => {
   const [location, setLocation] = useState('');
   const [checkinDate, setCheckinDate] = useState('');
   const [checkoutDate, setCheckoutDate] = useState('');
   const [hotels, setHotels] = useState<Hotel[]>([]);
 
-  interface Hotel {
-    id: string;
-    name: string;
-    address: string;
-    image: string;
-    rating: number;
-    type: string;
-    // Add more properties based on your hotel API response
-  }
-
-  
   const airbnbApi = {
     baseUrl: 'https://airbnb13.p.rapidapi.com/search-location',
     key: 'afc2813b96msh2a29f22185dcb96p131368jsncf99d3179834',
@@ -72,6 +68,7 @@ const Search: React.FC<Props> = ({ navigation }) => {
         image: hotel.images[0],
         rating: hotel.rating,
         type: hotel.type,
+        url: hotel.url,
 
       }));
       console.log(response.data);
@@ -83,13 +80,14 @@ const Search: React.FC<Props> = ({ navigation }) => {
   };
 
   const renderItem = ({ item }: { item: Hotel }) => (
-    <TouchableOpacity style={styles.hotelItem} onPress={() => navigation.navigate('HotelDetails', { hotel: item })}>
+    <TouchableOpacity style={styles.hotelItem}>
       <Image source={{ uri: item.image }} style={styles.hotelImage} />
       <View style={styles.hotelDetails}>
         <Text style={styles.hotelName}>{item.name}</Text>
         <Text style={styles.hotelAddress}>{item.address}</Text>
+        <Text style={styles.hotelUrl} onPress={() => openHotelUrl(item.url)}>{item.url}</Text>
+
       </View>
-      
     </TouchableOpacity>
   );
 
@@ -98,18 +96,21 @@ const Search: React.FC<Props> = ({ navigation }) => {
       <View style={styles.searchContainer}>
         <TextInput
           placeholder="Enter Location"
+          placeholderTextColor={'grey'}
           style={styles.input}
           value={location}
           onChangeText={(text) => setLocation(text)}
         />
         <TextInput
           placeholder="Check-in Date"
+          placeholderTextColor={'grey'}
           style={styles.input}
           value={checkinDate}
           onChangeText={(text) => setCheckinDate(text)}
         />
         <TextInput
           placeholder="Check-out Date"
+          placeholderTextColor={'grey'}
           style={styles.input}
           value={checkoutDate}
           onChangeText={(text) => setCheckoutDate(text)}
@@ -130,14 +131,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    
   },
   searchContainer: {
     marginBottom: 16,
+    
   },
   input: {
     borderBottomWidth: 1,
     marginBottom: 8,
     fontSize: 16,
+    color: 'black'
   },
   hotelList: {
     flex: 1,
@@ -159,9 +163,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 4,
+    color: 'black'
   },
   hotelAddress: {
     fontSize: 16,
+    color: 'black'
+  },
+  hotelUrl: {
+    fontSize: 14,
+    color: 'blue', 
+    textDecorationLine: 'underline', 
+    marginTop: 4, 
   },
 });
 
