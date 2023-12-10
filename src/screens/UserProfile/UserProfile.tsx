@@ -23,7 +23,7 @@ const UserProfile: React.FunctionComponent = () => {
 
       <View style={styles.profileContainer}>
         <Image
-          source={require('../../assessts/images/profile-icon-9.png')}
+          source={require('../../assets/images/profile-icon-9.png')}
           style={styles.profileImage}
         />
         <Text style={styles.title}>John Doe</Text>

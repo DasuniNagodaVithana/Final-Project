@@ -14,6 +14,7 @@ import Index from '../screens/HomeScreen';
 import MapScreen from '../screens/HomeScreen/MapScreen';
 import TabNavigator from './TabNavigation';
 import OnBoardScreen from '../screens/OnBoardScreen/OnBoardScreen';
+import UserProfile from '../screens/UserProfile/UserProfile';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -30,6 +31,7 @@ const Navigation = () => {
         <Stack.Screen name='Search' component={Search} />
         <Stack.Screen name='Favourite' component={Favourite} />
         <Stack.Screen name='Map' component={MapScreen} />
+        <Stack.Screen name='User' component={UserProfile} />
       
       </Stack.Navigator>
     </NavigationContainer>

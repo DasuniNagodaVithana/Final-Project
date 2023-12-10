@@ -10,6 +10,16 @@ const Index = () => {
     { key: "5", source: require("../../assets/images/Kandy.jpeg"), title: "Kandy" },
     { key: "6", source: require("../../assets/images/Jaffna.jpeg"), title: "Jaffna" },
   ]);
+
+  const [populargallery, setPopuarGallery] = useState([
+    { key: "1", source: require("../../assets/images/gallefort.jpeg"), title: "Galle Fort" },
+    { key: "2", source: require("../../assets/images/sigiriya-459197.jpg"), title: "Seegiriya" },
+    { key: "3", source: require("../../assets/images/tree.jpeg"), title: "Coconut Tree hill" },
+    { key: "4", source: require("../../assets/images/Ella.jpeg"), title: "Nine arch bridge" },
+    { key: "5", source: require("../../assets/images/Kandy.jpeg"), title: "Temple of Tooth" },
+    { key: "6", source: require("../../assets/images/nallur.jpg"), title: "Nallur Kandaswamy temple" },
+  ]);
+
   return (
     <View style={{backgroundColor:'#BFE4EC',flexGrow:1,height:"100%"}}>
       <View>
@@ -76,13 +86,13 @@ const Index = () => {
           </View>
             <FlatList
             horizontal={true}
-            data={gallery}
+            data={populargallery}
             renderItem={({item})=>{
               return(
                 <View style={{paddingVertical:10,paddingLeft:16}}>
                   <TouchableOpacity>
                   <Image source={item.source} style={{ width: 270, marginRight: 8, height: 220, borderRadius: 10,}} />
-                  <View style={styles.ImageOverlay}></View>
+                  <View style={styles.ImageOverlayPopular}></View>
                   <Image
               source={require("../../assets/images/map.png") }
               style={styles.mapStyle}/>

@@ -6,6 +6,7 @@ import Favourite from "../screens/HomeScreen/Favourite";
 import Search from "../screens/HomeScreen/Search";
 import Index from "../screens/HomeScreen";
 import MapScreen from "../screens/HomeScreen/MapScreen";
+import UserProfile from "../screens/UserProfile/UserProfile";
 
 
 const Tab = createBottomTabNavigator();
@@ -46,7 +47,7 @@ const TabNavigator: React.FC = () => {
         options={{
           tabBarIcon: () => (
             <Image
-              source={require("../assets/images/image9.png")}
+              source={require("../assets/images/w1.png")}
               style={{ width: 24, height: 24 }}
             />
           ),
@@ -59,6 +60,18 @@ const TabNavigator: React.FC = () => {
           tabBarIcon: () => (
             <Image
               source={require("../assets/images/image13.png")}
+              style={{ width: 26, height: 26 }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="User"
+        component={UserProfile}
+        options={{
+          tabBarIcon: () => (
+            <Image
+              source={require("../assets/images/user1.png")}
               style={{ width: 26, height: 26 }}
             />
           ),
