@@ -10,23 +10,34 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HotelDetails from '../HotelDetails';
 
-interface Hotel {
-  id: string;
-  name: string;
-  address: string;
-  image: string;
-  rating: number;
-  type: string;
-  // Add more properties based on your hotel API response
+import { StackNavigationProp } from '@react-navigation/stack';
+
+interface Props {
+  navigation: StackNavigationProp<any, any>;
 }
 
-const Search: React.FC = () => {
+
+const Search: React.FC<Props> = ({ navigation }) => {
   const [location, setLocation] = useState('');
   const [checkinDate, setCheckinDate] = useState('');
   const [checkoutDate, setCheckoutDate] = useState('');
   const [hotels, setHotels] = useState<Hotel[]>([]);
 
+  interface Hotel {
+    id: string;
+    name: string;
+    address: string;
+    image: string;
+    rating: number;
+    type: string;
+    // Add more properties based on your hotel API response
+  }
+
+  
   const airbnbApi = {
     baseUrl: 'https://airbnb13.p.rapidapi.com/search-location',
     key: 'afc2813b96msh2a29f22185dcb96p131368jsncf99d3179834',
@@ -72,12 +83,13 @@ const Search: React.FC = () => {
   };
 
   const renderItem = ({ item }: { item: Hotel }) => (
-    <TouchableOpacity style={styles.hotelItem}>
+    <TouchableOpacity style={styles.hotelItem} onPress={() => navigation.navigate('HotelDetails', { hotel: item })}>
       <Image source={{ uri: item.image }} style={styles.hotelImage} />
       <View style={styles.hotelDetails}>
         <Text style={styles.hotelName}>{item.name}</Text>
         <Text style={styles.hotelAddress}>{item.address}</Text>
       </View>
+      
     </TouchableOpacity>
   );
 
