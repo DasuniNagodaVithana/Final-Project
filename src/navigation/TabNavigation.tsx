@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 
 import Favourite from "../screens/HomeScreen/Favourite";
 import Search from "../screens/HomeScreen/Search";
+import StackNavigator from "../screens/StackNavigator";
 import Index from "../screens/HomeScreen";
 import MapScreen from "../screens/HomeScreen/MapScreen";
 import UserProfile from "../screens/UserProfile/UserProfile";
