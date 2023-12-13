@@ -4,6 +4,7 @@ import Custominput from '../../components/Custominput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 const Logo = require('../../assets/images/image1.jpg');
 
@@ -16,19 +17,27 @@ const SigninScreen: React.FC = () => {
   const navigation = useNavigation();
 
   //CustomButton function 
-  const onSignInPressed=()=>{
-    
-    //validate user
-    navigation.navigate("Home")
+  const onSignInPressed = async () => {
+    try {
+      const userCredential = await auth().signInWithEmailAndPassword(username, password);
+
+      // If successful, you can access the user data using userCredential.user
+      console.log('User signed in:', userCredential.user);
+
+      // Navigate to the Home screen or any other screen as needed
+      navigation.navigate('Home');
+    } catch (error:any) {
+      console.error('Error signing in:', error.message);
+      // Handle the error, display a message, or perform other actions
+    }
   };
-  const onForgotPasswordPressed=() =>{
-    
-    navigation.navigate('ForgotPassword')
-  }
-  
-  const onSignUpPressed=() =>{
-    navigation.navigate('SignUp')
-  }
+  const onForgotPasswordPressed = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
+  const onSignUpPressed = () => {
+    navigation.navigate('SignUp' );
+  };
 
 
   return (
@@ -38,7 +47,7 @@ const SigninScreen: React.FC = () => {
       style={[styles.logo,{height:height*0.3}]} resizeMode='contain' />
 
       <Custominput 
-      placeholder='Username'
+      placeholder='Email'
       value={username}
       setvalue={setUsername}
       secureTextEntry={false}
