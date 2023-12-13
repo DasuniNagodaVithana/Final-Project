@@ -25,7 +25,7 @@ const Index = () => {
       <View>
         <ImageBackground 
         source={require("../../assets/images/sl.jpg")}
-        style={{width:'100%',height:220}}
+        style={{width:'100%',height:240}}
         imageStyle={{borderBottomRightRadius:65}}>
           <View style={styles.DarkOverlay}></View>
           <View style={styles.searchContainer}>
@@ -57,7 +57,7 @@ const Index = () => {
       </View>
 
       <ScrollView>
-        <View style={{padding:10}}>
+        <View style={{padding:20}}>
           <Text style={{fontSize:22,fontWeight:'bold',color:'white'}}>Top Trending</Text>        
           </View>
           <View>
@@ -68,7 +68,7 @@ const Index = () => {
               return(
                 <View style={{paddingVertical:10,paddingLeft:16}}>
                   <TouchableOpacity>
-                  <Image source={item.source} style={{ width: 150, marginRight: 8, height: 190, borderRadius: 10,}} />
+                  <Image source={item.source} style={{ width: 150, marginRight: 8, height: 220, borderRadius: 10,}} />
                   <View style={styles.ImageOverlay}></View>
                   <Image
               source={require("../../assets/images/map.png") }
@@ -81,7 +81,7 @@ const Index = () => {
           </View>
           {/*popuar places */}
           <View>
-          <View style={{padding:10}}>
+          <View style={{padding:20}}>
           <Text style={{fontSize:22,fontWeight:'bold',color:'white'}}>Popular Places</Text>        
           </View>
             <FlatList
@@ -91,7 +91,7 @@ const Index = () => {
               return(
                 <View style={{paddingVertical:10,paddingLeft:16}}>
                   <TouchableOpacity>
-                  <Image source={item.source} style={{ width: 250, marginRight: 8, height: 190, borderRadius: 10,}} />
+                  <Image source={item.source} style={{ width: 270, marginRight: 8, height: 220, borderRadius: 10,}} />
                   <View style={styles.ImageOverlayPopular}></View>
                   <Image
               source={require("../../assets/images/map.png") }
@@ -120,7 +120,7 @@ const styles=StyleSheet.create(
       top:0,
       right:0,
       left:0,
-      height:220,
+      height:240,
       backgroundColor:'#000',
       opacity:0.3,
       borderBottomRightRadius:65
@@ -153,7 +153,7 @@ const styles=StyleSheet.create(
      ImageOverlay:{
       width: 150, 
       marginRight: 8, 
-      height: 190, 
+      height: 220, 
       borderRadius: 10,
       position:'absolute',
       backgroundColor:'#000',
@@ -178,9 +178,9 @@ const styles=StyleSheet.create(
       height:20,
      },
      ImageOverlayPopular:{
-      width: 250, 
+      width: 270, 
       marginRight: 8, 
-      height: 190, 
+      height: 220, 
       borderRadius: 10,
       position:'absolute',
       backgroundColor:'#000',

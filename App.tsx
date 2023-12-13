@@ -1,37 +1,48 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import SigninScreen from './src/screens/SigninScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+import ConfirmEmailScreen from './src/screens/ConfirmEmailScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import NewPasswordScreen from './src/screens/NewPasswordScreen';
+import Navigation from './src/navigation';
+
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+
+  
+  View,
+} from 'react-native';
 
 
-import Home from './screens/Home';
-import Destinations from './screens/Destinations';
-import Galle from './screens/Galle';
 
-const Stack = createStackNavigator();
 
-export default function App() {
+        
+
+function App(): JSX.Element {
+  
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Destinations" component={Destinations} />
-        <Stack.Screen name="Galle" component={Galle} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={styles.root}>
+     <Navigation/>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  root: {
+    flex:1,
+    backgroundColor:'#fffaf0'//lite green
   },
+  
 });
+
+export default App;
