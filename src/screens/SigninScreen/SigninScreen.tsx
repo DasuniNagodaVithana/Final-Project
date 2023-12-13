@@ -70,7 +70,7 @@ const SigninScreen: React.FC = () => {
      type='TERTIARY'
      />
 
-     <SocialSignInButtons/>
+     
 
 
 

@@ -1,32 +1,105 @@
-import React from "react";
+import React, { ReactNode } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image } from "react-native"; // Import Image component
+import { Image, StyleSheet, Text, View } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 import Favourite from "../screens/HomeScreen/Favourite";
 import Search from "../screens/HomeScreen/Search";
-import StackNavigator from "../screens/StackNavigator";
 import Index from "../screens/HomeScreen";
 import MapScreen from "../screens/HomeScreen/MapScreen";
 import UserProfile from "../screens/UserProfile/UserProfile";
 
-
 const Tab = createBottomTabNavigator();
+
+const CustomTabBarButton = ({ children }: { children: ReactNode }) => {
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    // Navigate to the "Search" screen
+    navigation.navigate("Search");
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View
+        style={{
+          top: -20,
+          justifyContent: "center",
+          alignItems: "center",
+          ...styles.shadow,
+        }}
+      >
+        <View
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 35,
+            backgroundColor: "#359CBB",
+          }}
+        >
+          {children}
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
 
 const TabNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: [
+          {
+            position: "absolute",
+            bottom: 1,
+            left: 4,
+            right: 3,
+            elevation: 5,
+            backgroundColor: "#ffffff",
+            borderRadius: 15,
+            height: 54,
+          },
+          styles.shadow,
+        ],
+      }}
     >
       <Tab.Screen
         name="Home"
         component={Index}
         options={{
-          tabBarIcon: () => (
-            <Image
-              source={require("../assets/images/image12.png")}
-              style={{ width: 24, height: 24 }}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center", top: 4 }}>
+              <Image
+                source={require("../assets/images/image12.png")}
+                resizeMode="contain"
+                style={{ width: 25, height: 25, tintColor: focused ? "#359CBB" : "#748c94" }}
+              />
+              <Text style={{ color: focused ? "#359CBB" : "#748c94", fontSize: 12 }}>
+                HOME
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Favourite"
+        component={Favourite}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center", top: 4 }}>
+              <Image
+                source={require("../assets/images/w1.png")}
+                resizeMode="contain"
+                style={{ width: 25, height: 25, tintColor: focused ? "#359CBB" : "#748c94" }}
+              />
+              <Text style={{ color: focused ? "#359CBB" : "#748c94", fontSize: 12 }}>
+                WEATHER
+              </Text>
+            </View>
           ),
         }}
       />
@@ -37,32 +110,28 @@ const TabNavigator: React.FC = () => {
           tabBarIcon: () => (
             <Image
               source={require("../assets/images/image20.png")}
-              style={{ width:40, height: 40}}
+              resizeMode="contain"
+              style={{ width: 50, height: 50, tintColor: "#fff" }}
             />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="Favourite"
-        component={Favourite}
-        options={{
-          tabBarIcon: () => (
-            <Image
-              source={require("../assets/images/w1.png")}
-              style={{ width: 24, height: 24 }}
-            />
-          ),
+          tabBarButton: (props) => <CustomTabBarButton {...props} />,
         }}
       />
       <Tab.Screen
         name="Map"
         component={MapScreen}
         options={{
-          tabBarIcon: () => (
-            <Image
-              source={require("../assets/images/image13.png")}
-              style={{ width: 26, height: 26 }}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center", top: 4 }}>
+              <Image
+                source={require("../assets/images/image13.png")}
+                resizeMode="contain"
+                style={{ width: 25, height: 25, tintColor: focused ? "#359CBB" : "#748c94" }}
+              />
+              <Text style={{ color: focused ? "#359CBB" : "#748c94", fontSize: 12 }}>
+                MAP
+              </Text>
+            </View>
           ),
         }}
       />
@@ -70,16 +139,35 @@ const TabNavigator: React.FC = () => {
         name="User"
         component={UserProfile}
         options={{
-          tabBarIcon: () => (
-            <Image
-              source={require("../assets/images/user1.png")}
-              style={{ width: 26, height: 26 }}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center", top:4 }}>
+              <Image
+                source={require("../assets/images/user1.png")}
+                resizeMode="contain"
+                style={{ width: 25, height: 25, tintColor: focused ? "#359CBB" : "#748c94" }}
+              />
+              <Text style={{ color: focused ? "#359CBB" : "#748c94", fontSize: 12 }}>
+                USER
+              </Text>
+            </View>
           ),
         }}
       />
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});
 
 export default TabNavigator;
