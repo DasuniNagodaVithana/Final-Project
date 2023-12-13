@@ -1,143 +1,339 @@
 /* eslint-disable prettier/prettier */
-import * as React from 'react';
-import { Image } from 'react-native';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import SettingComponent from '../../components/Settingcomponent/settingComponent';
+import React, { useEffect, useState } from 'react';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import {
+    StyleSheet,
+    SafeAreaView,
+    ScrollView,
+    Image,
+    ImageBackground,
+    View,
+    TouchableOpacity,
+    Text,
+    TextInput,
+    Alert,
+} from 'react-native';
 
-const UserProfile: React.FunctionComponent = () => {
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.appHeaderContainer}>
-        <TouchableOpacity>
-          <Text>
-          <Icon name="chevron-left" style={styles.iconStyle}/>
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.headerText}>User Profile</Text>
-        <View><Text>
-          <Icon name="chevron-right" style={styles.iconStyle}/>
-          </Text></View>
-      </View>
+interface UserData {
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  location: string;
+}
 
-      <View style={styles.profileContainer}>
-        <Image
-          source={require('../../assets/images/profile-icon-9.png')}
-          style={styles.profileImage}
-        />
-        <Text style={styles.title}>John Doe</Text>
-      </View>
+const userProfile = () => {
+    const [userData, setUserData] = useState<UserData>({
+        username: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        location: '',
+    });
+    const [isEditing, setIsEditing] = useState(false);
+    const [originalValues, setOriginalValues] = useState<UserData>({...userData});
 
-      <View style={styles.profileContainer}>
-        <SettingComponent
-          iconName="user"
-          headerText="Username"
-          subheaderText="John Doe"
-          subheaderText2="Edit"
-        />
-        <SettingComponent 
-          iconName="envelope"
-          headerText="Email"
-          subheaderText="johndeo@gmail.com"
-          subheaderText2="Edit"
-        />
-        <SettingComponent
-          iconName="phone"
-          headerText="Phone Number"
-          subheaderText="+1 123 456 7890"
-          subheaderText2="Edit"
-        />
-        <SettingComponent
-          iconName="map-marker"
-          headerText="Location"
-          subheaderText="New York, USA"
-          subheaderText2="Edit"
-        />
-        <SettingComponent
-          iconName="lock"
-          headerText="Password"
-          subheaderText="********"
-          subheaderText2="Edit"
-        />
+    useEffect(() => {
+        // Save the original values when entering edit mode
+        if (isEditing) {
+        setOriginalValues({...userData});
+        }
+    }, [isEditing]);
 
-      </View>
-    </View>
-  );
+    //handle edit button
+    const handleEditClick = () => {
+        setIsEditing(!isEditing);
+    };
+
+    const handleSaveClick = async () => {
+        setIsEditing(false);
+        try {
+            const currentUser = auth().currentUser;
+            if (currentUser) {
+                const userDocRef = firestore().collection('users').doc(currentUser.uid);
+                
+                if (!userData.username.trim()) {
+                    Alert.alert('Username cannot be empty');
+                    return; 
+                }
+
+                const updatedUserData = {
+                username: userData.username || '',
+                email: userData.email || '',
+                firstName: userData.firstName || '',
+                lastName: userData.lastName || '',
+                phoneNumber: userData.phoneNumber || '',
+                location: userData.location|| '',
+                };
+                await userDocRef.update(updatedUserData);
+
+                Alert.alert('Data updated successfully!');
+            } else {
+                console.error('User not authenticated');
+            }
+        } catch (error) {
+            console.error('Error updating user data:', error);
+        }
+    };
+
+    //handle cancel button
+    const handleCancelClick = () => {
+        setUserData({...originalValues});
+        setIsEditing(false);
+    };
+
+    const fetchUserDetails = async () => {
+        const currentUser = auth().currentUser;
+        if (currentUser) {
+            firestore()
+                .collection('users')
+                .doc(currentUser.uid)
+                .get()
+                .then(snapshot => {
+                    if (snapshot.exists) {
+                        const userDataFromFirestore = snapshot.data();
+                        setUserData(userDataFromFirestore as UserData);
+                        console.log(userDataFromFirestore);
+                        Alert.alert('GET');
+                    } else {
+                        Alert.alert('Document does not exist');
+                    }
+                })
+                .catch(error => {
+                    Alert.alert('Something Went Wrong');
+                });
+        } else {
+            Alert.alert('User not authenticated');
+        }
+    };
+
+    useEffect(() => {
+        fetchUserDetails();
+    }, []);
+
+    return (
+        <SafeAreaView style={styles.container}>
+        <ImageBackground
+            source={require('../../assets/images/sky1.jpg')}
+            style={styles.imageBackground}>
+            <TouchableOpacity
+            style={styles.editIconContainer}
+            onPress={handleEditClick}>
+            <Image
+                source={require('../../assets/images/profile-icon-9.png')}
+                style={styles.editIconImage}
+            />
+            </TouchableOpacity>
+        </ImageBackground>
+        <ScrollView style={styles.overlayContainer}>
+            <Text style={styles.text}> User Name:</Text>
+            <TextInput
+            style={styles.input}
+            value={userData.username}
+            onChangeText={text => setUserData({...userData, username: text})}
+            editable={isEditing}
+            />
+
+            <Text style={styles.text}> Email:</Text>
+            <TextInput
+            style={styles.input}
+            value={userData.email}
+            onChangeText={text => setUserData({...userData, email: text})}
+            editable={!isEditing}
+            />
+
+            <Text style={styles.text}> First Name:</Text>
+            <TextInput
+            style={styles.input}
+            value={userData.firstName}
+            onChangeText={text => setUserData({...userData, firstName: text})}
+            editable={isEditing}
+            />
+
+            <Text style={styles.text}> Last Name:</Text>
+            <TextInput
+            style={styles.input}
+            value={userData.lastName}
+            onChangeText={text => setUserData({...userData, lastName: text})}
+            editable={isEditing}
+            />
+
+            <Text style={styles.text}> Location:</Text>
+            <TextInput
+            style={styles.input}
+            value={userData.location}
+            onChangeText={text => setUserData({...userData, location: text})}
+            editable={isEditing}
+            />
+
+            <Text style={styles.text}> Phone Number:</Text>
+            <TextInput 
+            style={styles.input}
+            value={userData.phoneNumber}
+            onChangeText={text => setUserData({...userData, phoneNumber: text})}
+            editable={isEditing}
+            />
+
+            {isEditing && (
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleSaveClick}>
+                <Text style={styles.buttonText}>Save</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={handleCancelClick}>
+                <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+            </View>
+            )}
+            {!isEditing&&(
+            <TouchableOpacity
+                style={styles.logoutButton}>
+                <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
+                
+        )}
+        </ScrollView>
+        
+        <View style={styles.topConatiner}>
+            <Image
+            source={require('../../assets/images/profile-icon-9.png')}
+            style={styles.ProfileImage}
+            />
+        </View>
+        </SafeAreaView>
+    );
 };
 
-
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flex: 1,
-    backgroundColor: '#FAFAFA',
-  },
-  appHeaderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
-  iconStyle: {
-    fontSize: 23,
-    color: '#359CBB',
-  },
-
-  /*iconBackground: {
-    backgroundColor: '#359CBB',
-    borderRadius: 35,
-    height: 35,
-    width: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },*/
-
-  headerText: {
-    flex: 1,
-    fontSize: 25,
-    fontFamily: 'Outfit-Bold',
-    color: '#359CBB',
-    textAlign: 'center',
-  },
-  empty: {
-    width: 30,
-    height: 30,
-  },
-
-  profileContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 90,
-    marginVertical: 10,
-    borderColor: '#359CBB',
-    borderWidth: 2,
-  },
-
-  title: {
-    fontSize: 20,
-    color: '#359CBB',
-    letterSpacing: 1,
-    fontFamily: 'Urbanist-Medium',
-    marginTop: 10,
-  },
-
-  button: {
-    backgroundColor: '#5A7FD6',
-    borderRadius: 10,
-    padding: 10,
-    margin: 20,
-  },
-  buttonText: {
-    color: '#FAFAFA',
-    fontSize: 18,
-  },
+    const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        borderColor: '#6699CC',
+        borderWidth: 6,
+        borderRadius: 20,
+        overflow: 'hidden',
+    },
+    imageBackground: {
+        flex: 1 / 4,
+        resizeMode: 'cover',
+    },
+    overlayContainer: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        top: '22%',
+        elevation: 150,
+    },
+    textContainer: {
+        marginTop: 30,
+        padding: 20,
+    },
+    Topic: {
+        fontWeight: '900',
+        fontSize: 32,
+        elevation: 40,
+        color: 'white',
+        top: '12%',
+        left: '34%',
+    },
+    text: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#6699CC',
+        marginBottom: 10,
+        margin: 12,
+        marginTop: 30,
+    },
+    input: {
+        height: 40,
+        borderColor: '#DDF1D3',
+        backgroundColor: '#DDF1D3',
+        color: 'black',
+        borderWidth: 1,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        borderRadius: 20,
+        marginLeft: 30,
+        marginRight: 15,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 35,
+        marginBottom: 10,
+    },
+    saveButton: {
+        backgroundColor: '#009A17',
+        padding: 10,
+        borderRadius: 20,
+        width: 114,
+        height: 40,
+    },
+    cancelButton: {
+        backgroundColor: '#009A17',
+        padding: 10,
+        borderRadius: 20,
+        width: 114,
+        height: 40,
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
+        left: '26%',
+        //alignItems:'center',
+        //justifyContent:'center'
+    },
+    editIconContainer: {
+        position: 'absolute',
+        top: '58%',
+        right: '10%',
+        backgroundColor: 'white',
+        width: 35,
+        height: 35,
+        borderRadius: 30,
+        padding: 5,
+        elevation: 150,
+    },
+    editIconImage: {
+        width: 20,
+        height: 20,
+        top: 3,
+        left: 3,
+    },
+    ProfileImage: {
+        width: 75,
+        height: 75,
+        left: 3,
+        top: '2%',
+    },
+    topConatiner: {
+        ...StyleSheet.absoluteFillObject,
+        width: 90,
+        height: 90,
+        top: '16%',
+        left: '40%',
+        backgroundColor: '#D3D3D3',
+        borderRadius: 100,
+        elevation: 50,
+        borderWidth: 5,
+        borderColor: '#6699CC',
+    },
+    logoutButton: {
+        backgroundColor: '#6699CC', 
+        padding: 10,
+        borderRadius: 25,
+        width: 95,
+        height: 40,
+        alignSelf: 'center', 
+        marginTop: 30, 
+      },
 });
 
-export default UserProfile;
+export default userProfile;

@@ -5,14 +5,49 @@ import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
 import auth,{ FirebaseAuthTypes } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const SignUpScreen: React.FC = () => {
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordRepeat, setPasswordRepeat] = useState<string>('');
+
   const navigation = useNavigation();
 
+  const storeAdditionalUserData = async (
+    userId: string | undefined,
+    username: string,
+    email: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    location: string
+  ): Promise<void> => {
+    if (userId) {
+      try {
+        await firestore()
+          .collection('users')
+          .doc(userId)
+          .set({
+            username,
+            email,
+            firstName,
+            lastName,
+            phoneNumber,
+            location,
+            // Any other fields you want to store
+          });
+        console.log('User data stored successfully');
+      } catch (error) {
+        console.error('Error storing user data:', error);
+      }
+    }
+  };
 
   //CustomButton function 
   const onRegisterPressed = async () => {
@@ -28,14 +63,16 @@ const SignUpScreen: React.FC = () => {
       await user?.updateProfile({
         displayName: username,
       });
-  
+
+      // Store additional user data in database or wherever you're managing user profiles
+      await storeAdditionalUserData(user?.uid,username,email, firstName, lastName, phoneNumber, location);
+
       navigation.navigate('ConfirmEmail');
     } catch (error:any) {
       console.error('Error registering user:', error.message);
     }
   };
 
-  
   const onSignInPressed=() =>{
     navigation.navigate('SignIn');
   }
@@ -46,42 +83,63 @@ const SignUpScreen: React.FC = () => {
     console.warn('privacy')
   }
 
-
-
-
   return (
     <View style={styles.root}>
       <Text style={styles.title}>Create an account </Text>
 
+      <Custominput
+        placeholder='First Name'
+        value={firstName}
+        setvalue={setFirstName}
+        secureTextEntry={false}
+      />
+      <Custominput
+        placeholder='Last Name'
+        value={lastName}
+        setvalue={setLastName}
+        secureTextEntry={false}
+      />
+      <Custominput
+        placeholder='Phone Number'
+        value={phoneNumber}
+        setvalue={setPhoneNumber}
+        secureTextEntry={false}
+      />
+      <Custominput
+        placeholder='Location'
+        value={location}
+        setvalue={setLocation}
+        secureTextEntry={false}
+      />
+
       <Custominput 
-      placeholder='Username'
-      value={username}
-      setvalue={setUsername}
-      secureTextEntry={false}
+        placeholder='Username'
+        value={username}
+        setvalue={setUsername}
+        secureTextEntry={false}
       />
       <Custominput 
-      placeholder='Email'
-      value={email}
-      setvalue={setEmail}
-      secureTextEntry={false}
+        placeholder='Email'
+        value={email}
+        setvalue={setEmail}
+        secureTextEntry={false}
       />
 
       <Custominput 
-      placeholder='Password'
-      value={password}
-      setvalue={setPassword}
-      secureTextEntry={true}/>
+        placeholder='Password'
+        value={password}
+        setvalue={setPassword}
+        secureTextEntry={true}/>
 
       <Custominput 
-      placeholder='RepeatPassword'
-      value={passwordRepeat}
-      setvalue={setPasswordRepeat}
-      secureTextEntry={true}/>
+        placeholder='RepeatPassword'
+        value={passwordRepeat}
+        setvalue={setPasswordRepeat}
+        secureTextEntry={true}/>
 
-      
      <CustomButton 
-     text='Register'
-     onPress={onRegisterPressed}
+      text='Register'
+      onPress={onRegisterPressed}
      />
      
     <Text style={styles.text}>By registering, you confirm that you accept our{''}<Text style={styles.link} onPress={onTermsOfUsePressed}> Terms of Use</Text> and <Text style={styles.link}onPress={onPrivacyPressed}>Privacy Policy</Text> 
@@ -89,11 +147,11 @@ const SignUpScreen: React.FC = () => {
 
     <SocialSignInButtons/>
 
-<CustomButton 
-     text="Have an account? Sign in"
-     onPress={onSignInPressed}
-     type='TERTIARY'
-     />
+    <CustomButton 
+      text="Have an account? Sign in"
+      onPress={onSignInPressed}
+      type='TERTIARY'
+    />
     </View>
   );
 };
