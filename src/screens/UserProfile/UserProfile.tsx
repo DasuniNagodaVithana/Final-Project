@@ -25,7 +25,7 @@ interface UserData {
   location: string;
 }
 
-const userProfile = () => {
+const UserProfile = () => {
     const [userData, setUserData] = useState<UserData>({
         username: '',
         email: '',
@@ -336,4 +336,4 @@ const userProfile = () => {
       },
 });
 
-export default userProfile;
+export default UserProfile;
