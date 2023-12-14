@@ -28,10 +28,11 @@ const ForgotPasswordScreen: React.FC = () => {
       <Text style={styles.title}>Reset your password</Text>
 
       <Custominput 
-      placeholder='Username'
+      placeholder='Username (Email)'
       value={username}
       setvalue={setUsername}
       secureTextEntry={false}
+      icon='user'
       />
       
 

@@ -21,6 +21,7 @@ import Bentota from '../screens/DestinationScreen/Bentota';
 import Ella from '../screens/DestinationScreen/Ella';
 import Kandy from '../screens/DestinationScreen/Kandy';
 import Jaffna from '../screens/DestinationScreen/Jaffna';
+import Contnet from '../screens/DestinationScreen/Contnet';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -44,6 +45,8 @@ const Navigation = () => {
         <Stack.Screen name='EllaScreen' component={Ella} />
         <Stack.Screen name='KandyScreen' component={Kandy} />
         <Stack.Screen name='JaffnaScreen' component={Jaffna} />
+        <Stack.Screen name='ContentScreen' component={Contnet} />
+
 
       
       </Stack.Navigator>

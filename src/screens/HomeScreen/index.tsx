@@ -2,8 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, ScrollView, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+interface Location {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+}
+
+
 const Index = () => {
   const navigation = useNavigation();
+  
   const [gallery, setGallery] = useState([
     { key: "1", source: require("../../assets/images/Anuradhapura.jpeg"), title: "Anuradhapura" },
     { key: "2", source: require("../../assets/images/Galle.jpeg"), title: "Galle" },
@@ -26,6 +35,75 @@ const Index = () => {
     // Navigate to a screen based on the title
     navigation.navigate(`${title}Screen`);
   };
+  const handlePopularImagePress = (title: string) => {
+    let selectedLocation: Location | null = null;
+  
+    // Manually specify coordinates for the selected location
+    switch (title) {
+      case 'Galle Fort':
+        selectedLocation = {
+          latitude: 6.053519,
+          longitude: 80.220978,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+        break;
+  
+      case 'Sigiriya':
+        selectedLocation = {
+          latitude: 7.9575,
+          longitude: 80.7608,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+        break;
+  
+      case 'Coconut Tree Hill':
+        selectedLocation = {
+          latitude: 5.9667,
+          longitude: 80.4167,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+        break;
+  
+      case 'Nine Arch Bridge':
+        selectedLocation = {
+          latitude: 6.8515,
+          longitude: 81.0007,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+        break;
+  
+      case 'Temple of Tooth':
+        selectedLocation = {
+          latitude: 7.2947,
+          longitude: 80.6394,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+        break;
+  
+      case 'Nallur Kandaswamy Temple':
+        selectedLocation = {
+          latitude: 9.6844,
+          longitude: 80.0230,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        };
+        break;
+  
+      default:
+        // Handle default case or do nothing
+        break;
+    }
+  
+    // Navigate to the MapScreen with the selectedLocation parameter
+    navigation.navigate('Map', { selectedLocation });
+  };
+  
+  
 
   return (
     <View style={{ backgroundColor: '#BFE4EC', flexGrow: 1, height: "100%" }}>
@@ -92,7 +170,7 @@ const Index = () => {
             data={populargallery}
             renderItem={({ item }) => (
               <View style={{ paddingVertical: 10, paddingLeft: 16 }}>
-                <TouchableOpacity onPress={() => handleImagePress(item.title)}>
+                <TouchableOpacity onPress={() => handlePopularImagePress(item.title)}>
                   <Image source={item.source} style={{ width: 240, marginRight: 8, height: 190, borderRadius: 10 }} />
                   <View style={styles.ImageOverlayPopular}></View>
                   <Image
