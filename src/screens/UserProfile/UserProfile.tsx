@@ -117,10 +117,13 @@ const UserProfile = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            
         <ImageBackground
             source={require('../../assets/images/sky1.jpg')}
             style={styles.imageBackground}>
+                <Text style={styles.title} >User Profile</Text>
         </ImageBackground>
+        
         <ScrollView style={styles.overlayContainer}>
             <Text style={styles.text}> User Name:</Text>
             <TextInput
@@ -169,28 +172,6 @@ const UserProfile = () => {
             onChangeText={text => setUserData({...userData, phoneNumber: text})}
             editable={isEditing}
             />
-
-            {isEditing && (
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                style={styles.saveButton}
-                onPress={handleSaveClick}>
-                <Text style={styles.buttonText}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={handleCancelClick}>
-                <Text style={styles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
-            </View>
-            )}
-            {!isEditing&&(
-            <TouchableOpacity
-                style={styles.logoutButton}>
-                <Text style={styles.buttonText}>Logout</Text>
-            </TouchableOpacity>
-                
-        )}
         </ScrollView>
         
         <View style={styles.topConatiner}>
@@ -214,13 +195,14 @@ const UserProfile = () => {
     imageBackground: {
         flex: 1 / 4,
         resizeMode: 'cover',
+        borderRadius: 20,
     },
     overlayContainer: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'white',
         borderRadius: 20,
-        top: '22%',
-        elevation: 150,
+        top: '18%',
+        elevation: 180,
     },
     textContainer: {
         marginTop: 30,
@@ -238,6 +220,17 @@ const UserProfile = () => {
         fontWeight: 'bold',
         fontSize: 20,
         color: '#6699CC',
+        marginBottom: 10,
+        margin: 12,
+        marginTop: 30,
+    },
+
+    title: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+        justifyContent: 'center',
+        fontSize: 40,
+        color: '#DDF1D3',
         marginBottom: 10,
         margin: 12,
         marginTop: 30,
@@ -260,27 +253,11 @@ const UserProfile = () => {
         marginTop: 35,
         marginBottom: 10,
     },
-    saveButton: {
-        backgroundColor: '#009A17',
-        padding: 10,
-        borderRadius: 20,
-        width: 114,
-        height: 40,
-    },
-    cancelButton: {
-        backgroundColor: '#009A17',
-        padding: 10,
-        borderRadius: 20,
-        width: 114,
-        height: 40,
-    },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 16,
         left: '26%',
-        //alignItems:'center',
-        //justifyContent:'center'
     },
     editIconContainer: {
         position: 'absolute',
@@ -309,7 +286,7 @@ const UserProfile = () => {
         ...StyleSheet.absoluteFillObject,
         width: 90,
         height: 90,
-        top: '16%',
+        top: '12%',
         left: '40%',
         backgroundColor: '#D3D3D3',
         borderRadius: 100,
@@ -317,15 +294,6 @@ const UserProfile = () => {
         borderWidth: 5,
         borderColor: '#6699CC',
     },
-    logoutButton: {
-        backgroundColor: '#6699CC', 
-        padding: 10,
-        borderRadius: 25,
-        width: 95,
-        height: 40,
-        alignSelf: 'center', 
-        marginTop: 30, 
-      },
 });
 
 export default UserProfile;
