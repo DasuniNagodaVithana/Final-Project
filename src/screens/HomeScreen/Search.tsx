@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import { Linking } from 'react-native';
 
+
 interface Hotel {
   id: string;
   name: string;
@@ -91,8 +92,11 @@ const Search: React.FC = () => {
     </TouchableOpacity>
   );
 
-  return (
-    <View style={styles.container}>
+  return ( 
+    <View style={styles.container}>    
+    <View>
+    <Text style={styles.heading}>Let's Find the best place to stay </Text>
+      </View>  
       <View style={styles.searchContainer}>
         <TextInput
           placeholder="Enter Location"
@@ -102,20 +106,22 @@ const Search: React.FC = () => {
           onChangeText={(text) => setLocation(text)}
         />
         <TextInput
-          placeholder="Check-in Date"
+          placeholder="Check-in Date (2023-12-20)"
           placeholderTextColor={'grey'}
           style={styles.input}
           value={checkinDate}
           onChangeText={(text) => setCheckinDate(text)}
         />
         <TextInput
-          placeholder="Check-out Date"
+          placeholder="Check-out Date (2023-12-21)"
           placeholderTextColor={'grey'}
           style={styles.input}
           value={checkoutDate}
           onChangeText={(text) => setCheckoutDate(text)}
         />
-        <Button title="Search" onPress={searchHotels} />
+        <TouchableOpacity style={styles.searchButton} onPress={searchHotels}>
+  <Text style={styles.buttonText}>Search</Text>
+</TouchableOpacity>
       </View>
       <FlatList
         data={hotels}
@@ -133,9 +139,29 @@ const styles = StyleSheet.create({
     padding: 16,
     
   },
+  heading:{
+    alignItems:'center',
+    fontSize:22,
+    color:'#1e90ff',
+    fontWeight:'bold',
+    fontFamily: 'Outfit-Bold',
+    margin:10,
+    textAlign:'center'
+  },
   searchContainer: {
     marginBottom: 16,
-    
+    borderRadius:25, 
+  },
+  searchButton: {
+    backgroundColor: '#1e90ff',
+    padding: 10,
+    borderRadius: 15,
+  },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
   },
   input: {
     borderBottomWidth: 1,

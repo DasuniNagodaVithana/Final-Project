@@ -105,12 +105,14 @@ const MapScreen: React.FC = () => {
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        region={selectedLocation || {
-          latitude: 7.8731, // Sri Lanka latitude
-          longitude: 80.7718, // Sri Lanka longitude
-          latitudeDelta: 7,
-          longitudeDelta: 7,
-        } }
+        region={
+          selectedLocation || {
+            latitude: 7.8731, // Default to a specific latitude if selectedLocation is null
+            longitude: 80.7718, // Default to a specific longitude if selectedLocation is null
+            latitudeDelta: 7,
+            longitudeDelta: 7,
+          }
+        }
       />
     </View>
   );
