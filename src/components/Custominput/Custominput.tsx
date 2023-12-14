@@ -38,7 +38,6 @@ const Custominput = ({ value, setvalue, placeholder, secureTextEntry, keyPress, 
           onKeyPress={handleKeyPress} // Listen for key press event
         />
       </View>
-
     </View>
   );
 };

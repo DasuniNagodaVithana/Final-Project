@@ -75,9 +75,6 @@ const SigninScreen: React.FC = () => {
      
      />
 
-     <SocialSignInButtons/>
-
-
 
 <CustomButton 
      text="Don't have an account? create one"
