@@ -1,82 +1,66 @@
-import { View, Text, StyleSheet,TextInput,TextInputProps, } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TextInputProps } from 'react-native';
 import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface CustomInputProps extends TextInputProps {
   value: string;
   setvalue: (text: string) => void;
   placeholder: string;
-  secureTextEntry:boolean;
+  secureTextEntry: boolean;
   keyPress?: (e: any) => void;
+  icon: string; // New prop for the icon name
 }
 
-const Custominput = ({ value, setvalue, placeholder,secureTextEntry, keyPress }: CustomInputProps) => {
+const Custominput = ({ value, setvalue, placeholder, secureTextEntry, keyPress, icon }: CustomInputProps) => {
   return (
     <View style={styles.container}>
-      <TextInput 
-      value={value}
-      onChangeText={setvalue}
-      placeholder={placeholder}
-      style={styles.input}
-      secureTextEntry={secureTextEntry}
-      placeholderTextColor="#d3d3d3"
-      onKeyPress={keyPress}
-      />
-   
+      <View style={styles.inputContainer}>
+        <Icon name={icon} size={20} color="#2f4f4f" style={styles.icon} />
+        <TextInput
+          value={value}
+          onChangeText={setvalue}
+          style={styles.input}
+          secureTextEntry={secureTextEntry}
+          placeholder={placeholder}
+          placeholderTextColor="#d3d3d3"
+          onKeyPress={keyPress}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f8f8ff', 
-    width:'100%',
-
-    borderColor:'#e8e8e8',
-    borderWidth:1,
-    borderRadius:5,
-
-    paddingHorizontal:10,
-    marginVertical:5
+    backgroundColor: '#ffffff',
+    width: '100%',
+    borderColor: '#add8e6',
+    borderWidth: 1.8,
+    borderRadius: 19,
+    paddingHorizontal: 10,
+    marginVertical: 10,
   },
-  input:{
-    color:'black',
-    backgroundColor: '#fff',
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    height: 40,
-    borderRadius: 8,
-    marginTop: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.75,
-    shadowRadius: 3.84,
   },
-  searchBar: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    height: 40,
-    borderRadius: 8,
-    marginTop: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+  icon: {
+    marginRight: 10,
   },
-  searchText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  }
+  placeholderText: {
+    color: '#2f4f4f',
+    marginRight: 10,
+  },
+  input: {
+    width: '100%',
+    color: 'black',
+    backgroundColor: '#ffffff',
+    height: 40,
+    borderRadius: 15,
+    paddingHorizontal: 7,
+    
+    flex: 1,
+  },
 });
 
 export default Custominput;

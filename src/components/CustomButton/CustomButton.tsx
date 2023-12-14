@@ -33,30 +33,35 @@ const styles=StyleSheet.create({
   container:{
     
     width:'100%',
-
-    padding:15,
-    marginVertical:5,
-    borderRadius:5,
-    alignItems:'center'
+    marginVertical:6,
+    borderRadius:25,
+    alignItems:'center',
+    paddingLeft:5,
+    paddingRight:30,
+    paddingTop:10,
+    paddingBottom:10
   },
   container_PRIMARY:{
-    backgroundColor:'#3B71F3',
+    backgroundColor:'#359CBB',
 
   },
   container_SECONDARY:{
-    borderColor:'#3B71F3',
+    borderColor:'#359CBB',
     borderWidth:2,
   },
   container_TERTIARY:{
+    
 
   },
 
   text:{
     fontWeight:'bold',
-    fontSize:17
+    fontSize:20,
+    color:'#2f4f4f',
+    alignItems:'center'
   },
   text_SECONDARY:{
-    color:'#3B71F3'
+    color:'#800000'
   },
   text_TERTIARY:{
     color:'grey'

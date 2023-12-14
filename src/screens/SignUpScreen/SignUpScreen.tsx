@@ -92,24 +92,28 @@ const SignUpScreen: React.FC = () => {
         value={firstName}
         setvalue={setFirstName}
         secureTextEntry={false}
+        icon='user'
       />
       <Custominput
         placeholder='Last Name'
         value={lastName}
         setvalue={setLastName}
         secureTextEntry={false}
+        icon='user'
       />
       <Custominput
         placeholder='Phone Number'
         value={phoneNumber}
         setvalue={setPhoneNumber}
         secureTextEntry={false}
+        icon='phone'
       />
       <Custominput
         placeholder='Location'
         value={location}
         setvalue={setLocation}
         secureTextEntry={false}
+        icon='map-marker'
       />
 
       <Custominput 
@@ -117,25 +121,29 @@ const SignUpScreen: React.FC = () => {
         value={username}
         setvalue={setUsername}
         secureTextEntry={false}
+        icon='user'
       />
       <Custominput 
         placeholder='Email'
         value={email}
         setvalue={setEmail}
         secureTextEntry={false}
+        icon='envelope'
       />
 
       <Custominput 
         placeholder='Password'
         value={password}
         setvalue={setPassword}
-        secureTextEntry={true}/>
+        secureTextEntry={true}
+        icon='lock'/>
 
       <Custominput 
         placeholder='RepeatPassword'
         value={passwordRepeat}
         setvalue={setPasswordRepeat}
-        secureTextEntry={true}/>
+        secureTextEntry={true}
+        icon='lock'/>
 
      <CustomButton 
       text='Register'
@@ -145,12 +153,12 @@ const SignUpScreen: React.FC = () => {
     <Text style={styles.text}>By registering, you confirm that you accept our{''}<Text style={styles.link} onPress={onTermsOfUsePressed}> Terms of Use</Text> and <Text style={styles.link}onPress={onPrivacyPressed}>Privacy Policy</Text> 
     </Text>
 
-    <SocialSignInButtons/>
-
+    
     <CustomButton 
       text="Have an account? Sign in"
       onPress={onSignInPressed}
       type='TERTIARY'
+      fgColor='#ff6347'
     />
     </View>
   );
@@ -161,8 +169,8 @@ const styles=StyleSheet.create({
   root:{
     alignItems:'center',
     padding:20,
-    
     flex:1,
+    backgroundColor:"white"
   },
   title:{
     fontSize:24,

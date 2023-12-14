@@ -1,12 +1,12 @@
 import React ,{useState}from 'react';
 import { View, Text, Image,StyleSheet,useWindowDimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Custominput from '../../components/Custominput';
 import CustomButton from '../../components/CustomButton';
-import SocialSignInButtons from '../../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
-const Logo = require('../../assets/images/image1.jpg');
+const Logo = require('../../assets/images/travellogo.jpg');
 
 const SigninScreen: React.FC = () => {
   const [username,setUsername]=useState('');
@@ -51,13 +51,17 @@ const SigninScreen: React.FC = () => {
       value={username}
       setvalue={setUsername}
       secureTextEntry={false}
+      icon='envelope'
+      
       />
 
       <Custominput 
       placeholder='Password'
       value={password}
       setvalue={setPassword}
-      secureTextEntry={true}/>
+      secureTextEntry={true}
+      icon='lock'/>
+     
       
      <CustomButton 
      text='Sign In'
@@ -68,16 +72,15 @@ const SigninScreen: React.FC = () => {
      text='Forgot password?'
      onPress={onForgotPasswordPressed}
      type='TERTIARY'
-     />
-
      
-
+     />
 
 
 <CustomButton 
      text="Don't have an account? create one"
      onPress={onSignUpPressed}
      type='TERTIARY'
+     fgColor='#ff6347'
      />
     </View>
   );
@@ -87,13 +90,15 @@ const styles=StyleSheet.create({
   logo:{
     width:'70%',
     maxHeight:200,
-    maxWidth:300
+    maxWidth:300,
+    marginBottom:20
   },
   root:{
     alignItems:'center',
-    padding:20,
-    
+    padding:30,
+    paddingTop:60,
     flex:1,
+    backgroundColor:"white"
   }
 })
 
