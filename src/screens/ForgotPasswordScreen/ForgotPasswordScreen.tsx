@@ -14,8 +14,7 @@ const ForgotPasswordScreen: React.FC = () => {
   const onSendPressed = async () => {
     try {
       await auth().sendPasswordResetEmail(username); // Send password reset email
-      navigation.navigate('NewPassword');
-      // You can display a message here to check the email
+      navigation.navigate('NewPassword');l
       console.log('Password reset email sent. Please check your email.');
     } catch (error) {
       console.error('Error sending reset email:', error);
