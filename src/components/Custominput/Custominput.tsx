@@ -9,6 +9,7 @@ interface CustomInputProps extends TextInputProps {
   secureTextEntry: boolean;
   keyPress?: () => void;
   icon: string; // New prop for the icon name
+
 }
 
 const Custominput = ({ value, setvalue, placeholder, secureTextEntry, keyPress, icon }: CustomInputProps) => {

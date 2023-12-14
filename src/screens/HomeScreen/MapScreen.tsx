@@ -94,6 +94,7 @@ const MapScreen: React.FC = () => {
         secureTextEntry={false} // Change this based on your need}
         onKeyPress={handleSearch}
         icon='search'
+
       /> 
 
     <CustomButton 

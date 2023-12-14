@@ -40,6 +40,7 @@ const styles=StyleSheet.create({
     paddingRight:30,
     paddingTop:10,
     paddingBottom:10
+    
   },
   container_PRIMARY:{
     backgroundColor:'#359CBB',
