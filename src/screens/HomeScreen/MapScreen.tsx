@@ -45,6 +45,7 @@ const MapScreen: React.FC = () => {
         const { geometry } = firstResult;
         const { location } = geometry;
         
+        console.log('Found the following coordinates. ', location);
         // Update selectedLocation with the search result
         setSelectedLocation({
           latitude: location.lat,
@@ -91,16 +92,16 @@ const MapScreen: React.FC = () => {
         setvalue={setSearchText}
         placeholder="Search"
         secureTextEntry={false} // Change this based on your need}
-        keyPress={handleSearch  
-        }
-        icon='map-marker'
+        onKeyPress={handleSearch}
+        icon='search'
+
       /> 
 
-    {/* <CustomButton 
+    <CustomButton 
      text='Sign In'
      onPress={() => console.log(searchText)}
      style={{width: "20%"}}
-     /> */}
+     />
 
       <MapView
         provider={PROVIDER_GOOGLE}
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-    height: '92%',
+    height: '85%',
   },
 });
 
