@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -20,15 +20,23 @@ const MapScreen: React.FC = () => {
     // Extract the necessary information from the selected location
     const { geometry } = details;
     const { location } = geometry;
-    setSelectedLocation({
+    const newLocation = {
       latitude: location.lat,
       longitude: location.lng,
       latitudeDelta: 0.015,
       longitudeDelta: 0.0121,
-    });
+    };
+    // setSelectedLocation({
+    //   latitude: location.lat,
+    //   longitude: location.lng,
+    //   latitudeDelta: 0.015,
+    //   longitudeDelta: 0.0121,
+    // });
+    setSelectedLocation(newLocation);
+    mapRef.current?.animateToRegion(newLocation, 500);
   };
 
-  const handleSearch = async (e: any) => {
+  const handleSearch = async () => {
     try {
       
       // Perform a search using the entered text (searchText)
@@ -53,6 +61,14 @@ const MapScreen: React.FC = () => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         });
+
+        mapRef.current?.animateToRegion({
+          latitude: location.lat,
+          longitude: location.lng,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }, 500);
+
       } else {
         // Handle case when no results are found
         // You might want to display a message or handle it as needed
@@ -63,6 +79,7 @@ const MapScreen: React.FC = () => {
       console.error('Error during search:', error);
     }
   };
+  const mapRef = useRef<MapView>(null);
 
   return (
     <View style={styles.container}>
@@ -94,7 +111,6 @@ const MapScreen: React.FC = () => {
         secureTextEntry={false} // Change this based on your need}
         onKeyPress={handleSearch}
         icon='search'
-
       /> 
 
     <CustomButton 
@@ -103,7 +119,9 @@ const MapScreen: React.FC = () => {
      style={{width: "20%"}}
      />
 
+
       <MapView
+        ref={mapRef}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={selectedLocation || {
