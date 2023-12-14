@@ -25,7 +25,7 @@ interface UserData {
   location: string;
 }
 
-const userProfile = () => {
+const UserProfile = () => {
     const [userData, setUserData] = useState<UserData>({
         username: '',
         email: '',
@@ -120,14 +120,6 @@ const userProfile = () => {
         <ImageBackground
             source={require('../../assets/images/sky1.jpg')}
             style={styles.imageBackground}>
-            <TouchableOpacity
-            style={styles.editIconContainer}
-            onPress={handleEditClick}>
-            <Image
-                source={require('../../assets/images/profile-icon-9.png')}
-                style={styles.editIconImage}
-            />
-            </TouchableOpacity>
         </ImageBackground>
         <ScrollView style={styles.overlayContainer}>
             <Text style={styles.text}> User Name:</Text>
@@ -336,4 +328,4 @@ const userProfile = () => {
       },
 });
 
-export default userProfile;
+export default UserProfile;
