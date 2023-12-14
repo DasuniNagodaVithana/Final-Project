@@ -91,8 +91,9 @@ const MapScreen: React.FC = () => {
         setvalue={setSearchText}
         placeholder="Search"
         secureTextEntry={false} // Change this based on your need}
-        keyPress={handleSearch
+        keyPress={handleSearch  
         }
+        icon='map-marker'
       /> 
 
     {/* <CustomButton 
