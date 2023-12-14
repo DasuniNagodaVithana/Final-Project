@@ -126,9 +126,6 @@ const Index = () => {
               source={require("../../assets/images/image20.png")}
               style={{ position: 'absolute', top: 20, right: 60, width: 40, height: 40, opacity: 0.5 }}
             />
-            <Image
-              source={require("../../assets/images/menu1.png")}
-              style={{ position: 'absolute', top: -120, left: 11, width: 28, height: 28, }} />
 
             <Image
               source={require("../../assets/images/bellicon.png")}
