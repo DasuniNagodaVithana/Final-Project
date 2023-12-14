@@ -3,7 +3,7 @@ import { View, Text, StyleSheet,useWindowDimensions } from 'react-native';
 import Custominput from '../../components/Custominput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
-
+import auth from '@react-native-firebase/auth';
 
 const ForgotPasswordScreen: React.FC = () => {
   const [username,setUsername]=useState('');
@@ -11,9 +11,17 @@ const ForgotPasswordScreen: React.FC = () => {
   
 
   //CustomButton function 
-  const onSendPressed=()=>{
-    navigation.navigate('NewPassword')
-  }
+  const onSendPressed = async () => {
+    try {
+      await auth().sendPasswordResetEmail(username); // Send password reset email
+      navigation.navigate('NewPassword');
+      // You can display a message here to check the email
+      console.log('Password reset email sent. Please check your email.');
+    } catch (error) {
+      console.error('Error sending reset email:', error);
+      // Handle error scenarios (e.g., invalid email, network issues, etc.)
+    }
+  };
   
   const onSignInPressed=() =>{
     navigation.navigate('SignIn');
@@ -21,7 +29,6 @@ const ForgotPasswordScreen: React.FC = () => {
   const onResendPressed=() =>{
     console.warn('Resend')
   }
-  
 
   return (
     <View style={styles.root}>
@@ -34,15 +41,12 @@ const ForgotPasswordScreen: React.FC = () => {
       secureTextEntry={false}
       icon='user'
       />
-      
-
-      
+            
      <CustomButton 
      text='Send'
      onPress={onSendPressed}
      />
      
-
     <CustomButton 
      text="Back to Sign in"
      onPress={onSignInPressed}
